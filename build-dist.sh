@@ -6,6 +6,7 @@ PKGS="
 	tpope/vim-repeat
 	tpope/vim-surround
 	tpope/vim-fugitive
+	marcs-feh/vim-compile
 	junegunn/vim-easy-align
 "
 set -eu
@@ -14,11 +15,10 @@ FetchPlugins(){
 	mkdir -p plugins
 	cd plugins
 
-
 	for pkg in $PKGS; do
 		pkg="$(echo $pkg | sed -E 's/\s*//g')"
 		[ ! -z "$pkg" ] \
-			&& git clone --depth=1 "https://github.com/$pkg" &
+			&& git clone --quiet --depth=1 "https://github.com/$pkg" &
 	done
 
 	wait
@@ -32,7 +32,7 @@ FetchPlugins(){
 	wait
 
 	cd ..
-	wget https://raw.githubusercontent.com/marcs-feh/udark.vim/main/udark.vim -O udark.vim &
+	wget -q https://raw.githubusercontent.com/marcs-feh/udark.vim/main/udark.vim -O udark.vim &
 	rm -rf plugins
 	wait
 }
@@ -47,7 +47,7 @@ UnpackPlugins(){
 			mkdir -p "$rootFolder/$dirname"
 			mv "$f" "$rootFolder/$dirname"
 			cd "$rootFolder/$dirname"
-			unzip "$f"
+			unzip -q "$f"
 			cd ..
 		} &
 	done
@@ -57,7 +57,10 @@ UnpackPlugins(){
 CleanFiles(){
 	cleanup="$(find $ROOT \
 		-name '*.zip' -o \
-		-name '*.md' -o \
+		-name '*.gif' -o \
+		-name '*.png' -o \
+		-name '*.jpg' -o \
+		-name '*.webp' -o \
 		-name '*.yml' -o \
 		-name '*.markdown' -o \
 		-name 'CONTRIBUTING.*' -o \
@@ -67,9 +70,15 @@ CleanFiles(){
 	rm -rf $cleanup
 }
 
-FetchPlugins
-UnpackPlugins
-CleanFiles
+
+[ -d "$ROOT" ] || {
+	echo 'Downloading plugins with git'
+	FetchPlugins
+	echo 'Unpacking'
+	UnpackPlugins
+	echo 'Cleaning files'
+	CleanFiles
+}
 
 mkdir -p .vim/pack
 mkdir -p .vim/colors
@@ -78,5 +87,9 @@ cp _vimrc .vimrc
 cp udark.vim .vim/colors
 cp -r "$ROOT" .vim/pack
 
-zip -r -9 VimConfig.zip .vimrc .vim
+echo 'Generating zip archive'
+zip -q -r -9 vim-config.zip .vimrc .vim
+echo 'Generating base64 encoded zip archive'
+base64 -w 0 vim-config.zip > vim-config.zip.txt
 
+rm -rf .vim .vimrc
