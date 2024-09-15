@@ -1,5 +1,5 @@
 
-ROOT="vim-cool"
+distRoot="mf-vim"
 
 PKGS="
 	tpope/vim-commentary
@@ -17,45 +17,45 @@ FetchPlugins(){
 
 	for pkg in $PKGS; do
 		pkg="$(echo $pkg | sed -E 's/\s*//g')"
-		[ ! -z "$pkg" ] \
-			&& git clone --quiet --depth=1 "https://github.com/$pkg" &
+		[ -z "$pkg" ] || {
+			pkgDir="$(basename "$pkg")"
+			[ -d "$pkgDir" ] || {
+				echo "    Downloading $pkg ..."
+				git clone --quiet --depth=1 "https://github.com/$pkg"
+			}
+
+			cd "$pkgDir"
+			git pull --quiet
+			cd ..
+		} &
 	done
 
 	wait
-
-	for repo in $(ls .); do
-		cd "$repo"
-		git archive HEAD --format=zip > "../../$repo.zip"  &
-		cd ..
-	done
-
-	wait
-
 	cd ..
-	wget -q https://raw.githubusercontent.com/marcs-feh/udark.vim/main/udark.vim -O udark.vim &
-	rm -rf plugins
-	wait
 }
 
 UnpackPlugins(){
-	rootFolder="$ROOT/start"
+	rootFolder="$distRoot/start"
 
 	mkdir -p "$rootFolder"
-	for f in *.zip; do
-		{
-			dirname="$(echo $f | sed 's/.zip//g')"
-			mkdir -p "$rootFolder/$dirname"
-			mv "$f" "$rootFolder/$dirname"
-			cd "$rootFolder/$dirname"
-			unzip -q "$f"
-			cd ..
+	for pkg in $PKGS; do
+		pkg="$(echo $pkg | sed -E 's/\s*//g')"
+		[ -z "$pkg" ] || {
+			pkgDir="$(basename "$pkg")"
+			anchor="$(pwd)"
+
+			mkdir -p "$distRoot/start/$pkgDir"
+			cd "plugins/$pkgDir"
+			git archive HEAD --format=zip > "$anchor/$distRoot/start/$pkgDir/plugin.zip"
+			cd "$anchor/$distRoot/start/$pkgDir"
+			unzip -q plugin.zip
 		} &
 	done
 	wait
 }
 
 CleanFiles(){
-	cleanup="$(find $ROOT \
+	cleanup="$(find $distRoot \
 		-name '*.zip' -o \
 		-name '*.gif' -o \
 		-name '*.png' -o \
@@ -71,25 +71,28 @@ CleanFiles(){
 }
 
 
-[ -d "$ROOT" ] || {
-	echo 'Downloading plugins with git'
-	FetchPlugins
-	echo 'Unpacking'
-	UnpackPlugins
-	echo 'Cleaning files'
-	CleanFiles
-}
+rm -rf "$distRoot" vim-config.zip .vimrc .vim
+
+echo 'Downloading plugins with git'
+FetchPlugins
+
+echo 'Unpacking'
+UnpackPlugins
+
+echo 'Cleaning files'
+CleanFiles
 
 mkdir -p .vim/pack
 mkdir -p .vim/colors
 
-cp _vimrc .vimrc
-cp udark.vim .vim/colors
-cp -r "$ROOT" .vim/pack
+cp _vimrc .vimrc &
+cp udark.vim .vim/colors &
+cp -r "$distRoot" .vim/pack &
+wait
 
 echo 'Generating zip archive'
 zip -q -r -9 vim-config.zip .vimrc .vim
 echo 'Generating base64 encoded zip archive'
 base64 -w 0 vim-config.zip > vim-config.zip.txt
 
-rm -rf .vim .vimrc
+rm -rf .vim .vimrc "$distRoot"
