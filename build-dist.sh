@@ -7,6 +7,7 @@ PKGS="
 	tpope/vim-surround
 	tpope/vim-fugitive
 	marcs-feh/vim-compile
+	marcs-feh/udark.vim
 	junegunn/vim-easy-align
 "
 set -eu
@@ -86,7 +87,6 @@ mkdir -p .vim/pack
 mkdir -p .vim/colors
 
 cp _vimrc .vimrc &
-cp udark.vim .vim/colors &
 cp -r "$distRoot" .vim/pack &
 wait
 
