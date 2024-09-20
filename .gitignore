@@ -1,3 +1,5 @@
 *.zip
 *.txt
 plugins
+.vim
+.vimrc
