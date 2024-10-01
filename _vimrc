@@ -98,14 +98,10 @@ augroup NetrwKeys
         \ nnoremap <buffer> <silent> cd :cd %<CR>
 augroup END
 
-function! s:betterCMaps()
-  inoremap <silent> <C-f> ->
-endfunction
-
-augroup CAndCpp
+augroup C_And_Cpp
   autocmd!
-  autocmd FileType c,cpp call s:betterCHighlight()
-
+  autocmd FileType c,cpp
+        \ inoremap <silent> <C-l> ->
 augroup END
 
 nnoremap <silent> <leader>f :Lexplore<CR>

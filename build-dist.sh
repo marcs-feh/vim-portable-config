@@ -63,6 +63,7 @@ CleanFiles(){
 		-name '*.jpg' -o \
 		-name '*.webp' -o \
 		-name '*.yml' -o \
+		-name '*.vader' -o \
 		-name '*.markdown' -o \
 		-name 'CONTRIBUTING.*' -o \
 		-name '.github'
