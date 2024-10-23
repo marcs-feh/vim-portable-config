@@ -84,7 +84,7 @@ UnpackPlugins
 echo 'Cleaning files'
 CleanFiles
 
-mkdir -p .vim/pack .vim/colors mkdir .vim/after
+mkdir -p .vim/pack .vim/colors .vim/after
 
 cp _vimrc .vimrc &
 cp -r "$distRoot" .vim/pack &
