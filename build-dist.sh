@@ -84,11 +84,11 @@ UnpackPlugins
 echo 'Cleaning files'
 CleanFiles
 
-mkdir -p .vim/pack
-mkdir -p .vim/colors
+mkdir -p .vim/pack .vim/colors mkdir .vim/after
 
 cp _vimrc .vimrc &
 cp -r "$distRoot" .vim/pack &
+cp -r syntax .vim/after &
 wait
 
 echo 'Generating zip archive'
