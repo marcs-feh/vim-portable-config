@@ -1,4 +1,6 @@
 *.zip
+*.tgz
 plugins
+nvim
 .vim
 .vimrc

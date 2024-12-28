@@ -91,9 +91,16 @@ cp -r "$distRoot" .vim/pack &
 cp -r syntax .vim/after &
 wait
 
-echo 'Generating zip archive'
-zip -q -r -9 vim-config.zip .vimrc .vim
-echo 'Generating base64 encoded zip archive'
-base64 -w 0 vim-config.zip > vim-config.zip.txt
+echo 'Generating Vim tarball'
+tar czf vim-config.tgz .vimrc .vim
 
-rm -rf .vim .vimrc "$distRoot"
+echo 'Generating Neovim tarball'
+mv .vim nvim
+mv .vimrc nvim/init.vim
+tar czf nvim-config.tgz nvim
+
+echo 'Generating base64 encoded versions'
+base64 -w 0 vim-config.tgz > vim-config.tgz.txt
+base64 -w 0 nvim-config.tgz > nvim-config.tgz.txt
+
+rm -rf nvim "$distRoot"

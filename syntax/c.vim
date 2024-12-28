@@ -6,7 +6,6 @@ syn keyword cExtraType
 	\ f16 f32 f64
 
 syn keyword Keyword typedef sizeof alignof decltype
-syn match cppNamespace '\v\zs\i+\ze(\<.{-}\>)?\s*::\s*\i+'
 syn match cAttribute '\v\[\[.{-}\]\]'
 
 syn keyword cType true false NULL
@@ -24,7 +23,6 @@ hi! link cStructKw Keyword
 hi! link cDeFactoConstant Keyword
 hi! link cStructure Type
 hi! link cStructKw Keyword
-hi! link cppNamespace Type
 hi! link cAttribute Type
 hi! link cExtraType Type
 
