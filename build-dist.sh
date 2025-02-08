@@ -1,4 +1,4 @@
-
+#!/usr/bin/env sh
 distRoot="mf-vim"
 
 PKGS="
@@ -24,7 +24,6 @@ FetchPlugins(){
 				echo "    Downloading $pkg ..."
 				git clone --quiet --depth=1 "https://github.com/$pkg"
 			}
-
 			cd "$pkgDir"
 			git pull --quiet
 			cd ..
@@ -100,7 +99,7 @@ mv .vimrc nvim/init.vim
 tar czf nvim-config.tgz nvim
 
 echo 'Generating base64 encoded versions'
-base64 -w 0 vim-config.tgz > vim-config.tgz.txt
-base64 -w 0 nvim-config.tgz > nvim-config.tgz.txt
+base64 vim-config.tgz > vim-config.tgz.txt
+base64 nvim-config.tgz > nvim-config.tgz.txt
 
 rm -rf nvim "$distRoot"
