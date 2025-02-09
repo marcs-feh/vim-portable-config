@@ -8,7 +8,7 @@ PKGS="
 	tpope/vim-fugitive
 	marcs-feh/vim-compile
 	marcs-feh/vim-odin
-	marcs-feh/udark.vim
+	marcs-feh/vim-udark
 	junegunn/vim-easy-align
 "
 set -eu
