@@ -86,7 +86,7 @@ CleanFiles
 
 mkdir -p .vim/pack .vim/colors .vim/after
 
-cp _vimrc .vimrc &
+cp vimrc .vimrc &
 cp -r "$distRoot" .vim/pack &
 cp -r syntax .vim/after &
 wait

@@ -46,6 +46,7 @@ set scrolloff=8
 set sidescrolloff=12
 set background=dark
 
+syntax on
 colors udark
 
 " Netrw Options
@@ -65,6 +66,7 @@ let g:maplocalleader=' '
 
 noremap Q <Nop>
 noremap K <Nop>
+nmap gs ysiw
 
 if g:JKEscape
   " The `^ ensures that the cursor stays on the last character typed
@@ -91,6 +93,7 @@ call s:map('n', '<leader>X', ':bdelete!<CR>')
 call s:map('n', '<leader>l', ':noh<CR>:echo<CR>')
 call s:map('n', '<leader>c', ':Commentary<CR>')
 call s:map('v', '<leader>c', ':Commentary<CR>')
+
 
 augroup NetrwKeys
   autocmd!
@@ -123,4 +126,5 @@ xnoremap <silent> <C-j> :move '>+1<cr>gv-gv
 
 let s:fencoding=(strlen(&fileencoding) > 0 ? &fileencoding : 'none')
 let &statusline=' %m%f %= %y | %l:%c | ' . s:fencoding . '[' . &fileformat  .'] '
+
 
