@@ -114,9 +114,9 @@ nnoremap <silent> <leader>sh :split<CR>
 nnoremap <silent> <leader>sv :vsplit<CR>
 nnoremap <C-o> <C-w>w
 
-inoremap <silent> <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
-inoremap <silent> <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
-inoremap <silent> <expr> <CR>    pumvisible() ? ' ' : '<CR>'
+" inoremap <silent> <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
+" inoremap <silent> <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
+" inoremap <silent> <expr> <CR>    pumvisible() ? ' ' : '<CR>'
 
 vnoremap <silent> < <gv
 vnoremap <silent> > >gv
